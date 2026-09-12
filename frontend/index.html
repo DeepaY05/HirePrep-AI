@@ -39,7 +39,6 @@
 
         header p {
             color: #6b7280;
-            font-size: 16px;
         }
 
         .card {
@@ -59,11 +58,6 @@
             border-radius: 12px;
             padding: 35px;
             text-align: center;
-            cursor: pointer;
-        }
-
-        .upload-area:hover {
-            border-color: #2563eb;
         }
 
         input[type="file"] {
@@ -83,7 +77,6 @@
             border-radius: 10px;
             resize: vertical;
             font-size: 15px;
-            margin-top: 10px;
         }
 
         button {
@@ -127,6 +120,34 @@
         .score {
             font-size: 32px;
             font-weight: bold;
+        }
+
+        .quality-box {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .quality-score {
+            text-align: center;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .quality-score-number {
+            font-size: 38px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .quality-info {
+            line-height: 1.8;
+        }
+
+        .quality-info p {
+            margin-bottom: 6px;
         }
 
         .skills-container {
@@ -178,16 +199,36 @@
             font-weight: bold;
         }
 
-        .status.matched-text {
+        .matched-text {
             color: #15803d;
         }
 
-        .status.missing-text {
+        .missing-text {
             color: #dc2626;
         }
 
-        .importance {
-            text-transform: capitalize;
+        .recommendations {
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+
+        .section-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .section-tag {
+            padding: 8px 12px;
+            background: #eef2ff;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .suggestion-list {
+            padding-left: 20px;
+            line-height: 1.8;
         }
 
         .loading {
@@ -208,11 +249,9 @@
 
         @media (max-width: 700px) {
 
-            .score-container {
-                grid-template-columns: 1fr;
-            }
-
-            .skills-container {
+            .score-container,
+            .skills-container,
+            .quality-box {
                 grid-template-columns: 1fr;
             }
 
@@ -222,6 +261,7 @@
         }
 
     </style>
+
 </head>
 
 
@@ -235,13 +275,13 @@
 
         <p>
             Analyze your resume against a job description
-            using skill matching and NLP similarity.
+            using skill matching, NLP and resume quality analysis.
         </p>
 
     </header>
 
 
-    <!-- UPLOAD RESUME -->
+    <!-- RESUME UPLOAD -->
 
     <div class="card">
 
@@ -280,9 +320,7 @@
             placeholder="Paste the job description here..."
         ></textarea>
 
-        <button
-            onclick="analyzeResume()"
-        >
+        <button onclick="analyzeResume()">
             Analyze Resume
         </button>
 
@@ -308,7 +346,8 @@
         id="results"
     >
 
-        <!-- SCORES -->
+
+        <!-- MATCH SCORES -->
 
         <div class="card">
 
@@ -362,6 +401,63 @@
         </div>
 
 
+        <!-- RESUME QUALITY -->
+
+        <div class="card">
+
+            <h2>Resume Quality</h2>
+
+            <div class="quality-box">
+
+                <div class="quality-score">
+
+                    <h3>Quality Score</h3>
+
+                    <div
+                        class="quality-score-number"
+                        id="qualityScore"
+                    >
+                        0
+                    </div>
+
+                    <p>out of 100</p>
+
+                </div>
+
+
+                <div class="quality-info">
+
+                    <p>
+                        <strong>Word Count:</strong>
+                        <span id="wordCount">0</span>
+                    </p>
+
+                    <p>
+                        <strong>Email:</strong>
+                        <span id="emailStatus"></span>
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        <span id="phoneStatus"></span>
+                    </p>
+
+                    <p>
+                        <strong>Detected Sections:</strong>
+                    </p>
+
+                    <div
+                        class="section-list"
+                        id="sections"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
         <!-- SKILLS -->
 
         <div class="card">
@@ -369,7 +465,6 @@
             <h2>Skills Analysis</h2>
 
             <div class="skills-container">
-
 
                 <div>
 
@@ -403,7 +498,7 @@
         </div>
 
 
-        <!-- BREAKDOWN -->
+        <!-- SKILL BREAKDOWN -->
 
         <div class="card">
 
@@ -416,9 +511,7 @@
                     <tr>
 
                         <th>Skill</th>
-
                         <th>Importance</th>
-
                         <th>Status</th>
 
                     </tr>
@@ -432,6 +525,35 @@
             </table>
 
         </div>
+
+
+        <!-- RECOMMENDATIONS -->
+
+        <div class="card">
+
+            <h2>Job Match Recommendations</h2>
+
+            <ul
+                class="recommendations"
+                id="recommendations"
+            ></ul>
+
+        </div>
+
+
+        <!-- RESUME SUGGESTIONS -->
+
+        <div class="card">
+
+            <h2>Resume Improvement Suggestions</h2>
+
+            <ul
+                class="suggestion-list"
+                id="suggestions"
+            ></ul>
+
+        </div>
+
 
     </div>
 
@@ -480,7 +602,6 @@ async function analyzeResume() {
         document.getElementById(
             "jobDescription"
         ).value.trim();
-
 
     const loading =
         document.getElementById("loading");
@@ -587,6 +708,10 @@ function displayResults(data) {
     ).style.display = "block";
 
 
+    // -----------------------------------------------------
+    // MATCH SCORES
+    // -----------------------------------------------------
+
     document.getElementById(
         "overallScore"
     ).textContent =
@@ -603,6 +728,74 @@ function displayResults(data) {
         "nlpScore"
     ).textContent =
         data.text_similarity_score + "%";
+
+
+    // -----------------------------------------------------
+    // RESUME QUALITY
+    // -----------------------------------------------------
+
+    const quality =
+        data.resume_quality;
+
+
+    document.getElementById(
+        "qualityScore"
+    ).textContent =
+        quality.resume_quality_score;
+
+
+    document.getElementById(
+        "wordCount"
+    ).textContent =
+        quality.word_count;
+
+
+    document.getElementById(
+        "emailStatus"
+    ).textContent =
+        quality.email_detected
+            ? "Detected"
+            : "Not detected";
+
+
+    document.getElementById(
+        "phoneStatus"
+    ).textContent =
+        quality.phone_detected
+            ? "Detected"
+            : "Not detected";
+
+
+    // -----------------------------------------------------
+    // SECTIONS
+    // -----------------------------------------------------
+
+    const sectionsContainer =
+        document.getElementById(
+            "sections"
+        );
+
+    sectionsContainer.innerHTML = "";
+
+
+    quality.detected_sections.forEach(
+        section => {
+
+            const span =
+                document.createElement("span");
+
+            span.className =
+                "section-tag";
+
+            span.textContent =
+                section;
+
+            sectionsContainer.appendChild(
+                span
+            );
+
+        }
+    );
 
 
     // -----------------------------------------------------
@@ -701,9 +894,6 @@ function displayResults(data) {
             importanceCell.textContent =
                 item.importance;
 
-            importanceCell.className =
-                "importance";
-
 
             const statusCell =
                 document.createElement("td");
@@ -743,6 +933,64 @@ function displayResults(data) {
 
             breakdown.appendChild(
                 row
+            );
+
+        }
+    );
+
+
+    // -----------------------------------------------------
+    // JOB RECOMMENDATIONS
+    // -----------------------------------------------------
+
+    const recommendations =
+        document.getElementById(
+            "recommendations"
+        );
+
+    recommendations.innerHTML = "";
+
+
+    data.recommendations.forEach(
+        recommendation => {
+
+            const li =
+                document.createElement("li");
+
+            li.textContent =
+                recommendation;
+
+            recommendations.appendChild(
+                li
+            );
+
+        }
+    );
+
+
+    // -----------------------------------------------------
+    // RESUME SUGGESTIONS
+    // -----------------------------------------------------
+
+    const suggestions =
+        document.getElementById(
+            "suggestions"
+        );
+
+    suggestions.innerHTML = "";
+
+
+    quality.suggestions.forEach(
+        suggestion => {
+
+            const li =
+                document.createElement("li");
+
+            li.textContent =
+                suggestion;
+
+            suggestions.appendChild(
+                li
             );
 
         }
