@@ -3,6 +3,11 @@ import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+
+# =========================================================
+# SKILLS
+# =========================================================
+
 SKILLS = [
     "Python",
     "Java",
@@ -58,8 +63,13 @@ SKILLS = [
     "API",
     "JSON",
     "ONNX",
-    "CUDA",
+    "CUDA"
 ]
+
+
+# =========================================================
+# SKILL ALIASES
+# =========================================================
 
 SKILL_ALIASES = {
     "sql": ["sql", "mysql", "postgresql", "sqlite"],
@@ -89,6 +99,11 @@ SKILL_ALIASES = {
     "data analysis": ["data analysis", "data analytics"],
 }
 
+
+# =========================================================
+# CANONICAL SKILL NAMES
+# =========================================================
+
 CANONICAL_SKILLS = {
     "mysql": "SQL",
     "postgresql": "SQL",
@@ -106,6 +121,11 @@ CANONICAL_SKILLS = {
     "data analytics": "Data Analysis",
     "github": "Git",
 }
+
+
+# =========================================================
+# SKILL IMPORTANCE
+# =========================================================
 
 SKILL_IMPORTANCE = {
     "python": "core",
@@ -155,6 +175,10 @@ def normalize_skill(skill):
 
     return skill
 
+
+# =========================================================
+# EXTRACT SKILLS
+# =========================================================
 
 def extract_skills(text):
 
@@ -225,6 +249,91 @@ def calculate_text_similarity(
 
 
 # =========================================================
+# MATCH STATUS
+# =========================================================
+
+def get_match_status(overall_score):
+
+    if overall_score >= 80:
+
+        return "Strong Match"
+
+    elif overall_score >= 60:
+
+        return "Moderate Match"
+
+    else:
+
+        return "Low Match"
+
+
+# =========================================================
+# MATCH EXPLANATION
+# =========================================================
+
+def generate_match_explanation(
+    overall_score,
+    matched_skills,
+    missing_skills,
+    text_similarity_score
+):
+
+    match_status = get_match_status(
+        overall_score
+    )
+
+    if match_status == "Strong Match":
+
+        explanation = (
+            "Your resume is a strong match for this "
+            "job. Most important skills required by "
+            "the job description are present in your resume."
+        )
+
+    elif match_status == "Moderate Match":
+
+        explanation = (
+            "Your resume has a moderate match with this "
+            "job. You have several relevant skills, but "
+            "there are some areas that could be improved."
+        )
+
+    else:
+
+        explanation = (
+            "Your resume currently has a low match with "
+            "this job. Consider improving your relevant "
+            "skills and tailoring your resume to the job description."
+        )
+
+    if missing_skills:
+
+        explanation += (
+            " Missing skills include: "
+            + ", ".join(missing_skills)
+            + "."
+        )
+
+    if matched_skills:
+
+        explanation += (
+            " Strong areas include: "
+            + ", ".join(matched_skills)
+            + "."
+        )
+
+    if text_similarity_score < 40:
+
+        explanation += (
+            " The wording of your resume is also quite "
+            "different from the job description, so consider "
+            "using relevant keywords naturally."
+        )
+
+    return explanation
+
+
+# =========================================================
 # RECOMMENDATIONS
 # =========================================================
 
@@ -247,6 +356,7 @@ def generate_recommendations(
 
         if importance == "core":
             core_missing.append(skill)
+
         else:
             supporting_missing.append(skill)
 
@@ -303,9 +413,7 @@ def analyze_resume_quality(resume_text):
     text_lower = text.lower()
 
 
-    # -----------------------------------------------------
     # CONTACT INFORMATION
-    # -----------------------------------------------------
 
     email_found = bool(
         re.search(
@@ -322,9 +430,7 @@ def analyze_resume_quality(resume_text):
     )
 
 
-    # -----------------------------------------------------
     # RESUME SECTIONS
-    # -----------------------------------------------------
 
     section_patterns = {
 
@@ -384,28 +490,29 @@ def analyze_resume_quality(resume_text):
     )
 
 
-    # -----------------------------------------------------
     # QUALITY SCORE
-    # -----------------------------------------------------
 
     score = 0
 
     if 300 <= word_count <= 1200:
+
         score += 25
 
     elif 150 <= word_count < 300:
+
         score += 15
 
     elif word_count > 1200:
+
         score += 10
 
     else:
+
         score += 5
 
 
     if email_found:
         score += 15
-
 
     if phone_found:
         score += 15
@@ -420,15 +527,17 @@ def analyze_resume_quality(resume_text):
 
 
     if "skills" in detected_sections:
+
         score += 5
 
 
-    score = min(score, 100)
+    score = min(
+        score,
+        100
+    )
 
 
-    # -----------------------------------------------------
     # QUALITY SUGGESTIONS
-    # -----------------------------------------------------
 
     suggestions = []
 
@@ -525,11 +634,10 @@ def match_job_description(
     )
 
 
-    # -----------------------------------------------------
     # MATCH SKILLS
-    # -----------------------------------------------------
 
     matched_skills = []
+
     missing_skills = []
 
 
@@ -537,18 +645,21 @@ def match_job_description(
 
         if job_skill in resume_skills:
 
-            matched_skills.append(job_skill)
+            matched_skills.append(
+                job_skill
+            )
 
         else:
 
-            missing_skills.append(job_skill)
+            missing_skills.append(
+                job_skill
+            )
 
 
-    # -----------------------------------------------------
     # WEIGHTED SKILL SCORE
-    # -----------------------------------------------------
 
     total_weight = 0
+
     matched_weight = 0
 
 
@@ -584,9 +695,7 @@ def match_job_description(
         skill_match_score = 0
 
 
-    # -----------------------------------------------------
     # NLP SIMILARITY
-    # -----------------------------------------------------
 
     text_similarity_score = (
         calculate_text_similarity(
@@ -596,9 +705,7 @@ def match_job_description(
     )
 
 
-    # -----------------------------------------------------
     # OVERALL SCORE
-    # -----------------------------------------------------
 
     overall_score = (
         (skill_match_score * 0.6)
@@ -606,10 +713,30 @@ def match_job_description(
         (text_similarity_score * 0.4)
     )
 
+    overall_score = round(
+        overall_score,
+        2
+    )
 
-    # -----------------------------------------------------
+
+    # MATCH STATUS
+
+    match_status = get_match_status(
+        overall_score
+    )
+
+
+    # MATCH EXPLANATION
+
+    match_explanation = generate_match_explanation(
+        overall_score,
+        matched_skills,
+        missing_skills,
+        text_similarity_score
+    )
+
+
     # SKILL BREAKDOWN
-    # -----------------------------------------------------
 
     skill_breakdown = []
 
@@ -637,9 +764,7 @@ def match_job_description(
         })
 
 
-    # -----------------------------------------------------
     # RECOMMENDATIONS
-    # -----------------------------------------------------
 
     recommendations = generate_recommendations(
         missing_skills,
@@ -647,18 +772,14 @@ def match_job_description(
     )
 
 
-    # -----------------------------------------------------
     # RESUME QUALITY
-    # -----------------------------------------------------
 
     resume_quality = analyze_resume_quality(
         resume_text
     )
 
 
-    # -----------------------------------------------------
     # FINAL RESULT
-    # -----------------------------------------------------
 
     return {
 
@@ -680,12 +801,18 @@ def match_job_description(
         "text_similarity_score":
             text_similarity_score,
 
-        "overall_match_score": round(
+        "overall_match_score":
             overall_score,
-            2
-        ),
 
-        "recommendations": recommendations,
+        "match_status":
+            match_status,
 
-        "resume_quality": resume_quality
+        "match_explanation":
+            match_explanation,
+
+        "recommendations":
+            recommendations,
+
+        "resume_quality":
+            resume_quality
     }
