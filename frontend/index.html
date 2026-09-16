@@ -98,6 +98,10 @@
             display: none;
         }
 
+        /* =========================
+           MATCH SCORES
+        ========================= */
+
         .score-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -121,6 +125,46 @@
             font-size: 32px;
             font-weight: bold;
         }
+
+        /* =========================
+           MATCH SUMMARY
+        ========================= */
+
+        .match-summary {
+            margin-top: 22px;
+            padding: 22px;
+            background: #f8fafc;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .match-status {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .match-explanation {
+            color: #6b7280;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .strong-match {
+            color: #15803d;
+        }
+
+        .moderate-match {
+            color: #d97706;
+        }
+
+        .low-match {
+            color: #dc2626;
+        }
+
+        /* =========================
+           RESUME QUALITY
+        ========================= */
 
         .quality-box {
             display: grid;
@@ -149,6 +193,10 @@
         .quality-info p {
             margin-bottom: 6px;
         }
+
+        /* =========================
+           SKILLS
+        ========================= */
 
         .skills-container {
             display: grid;
@@ -179,6 +227,10 @@
             color: #991b1b;
         }
 
+        /* =========================
+           SKILL BREAKDOWN
+        ========================= */
+
         .breakdown {
             width: 100%;
             border-collapse: collapse;
@@ -207,10 +259,18 @@
             color: #dc2626;
         }
 
+        /* =========================
+           RECOMMENDATIONS
+        ========================= */
+
         .recommendations {
             padding-left: 20px;
             line-height: 1.8;
         }
+
+        /* =========================
+           SECTIONS
+        ========================= */
 
         .section-list {
             display: flex;
@@ -226,10 +286,18 @@
             font-size: 13px;
         }
 
+        /* =========================
+           SUGGESTIONS
+        ========================= */
+
         .suggestion-list {
             padding-left: 20px;
             line-height: 1.8;
         }
+
+        /* =========================
+           LOADING / ERROR
+        ========================= */
 
         .loading {
             display: none;
@@ -247,6 +315,10 @@
             margin-top: 15px;
         }
 
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
         @media (max-width: 700px) {
 
             .score-container,
@@ -258,6 +330,7 @@
             .container {
                 width: 94%;
             }
+
         }
 
     </style>
@@ -268,6 +341,11 @@
 <body>
 
 <div class="container">
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
 
     <header>
 
@@ -281,7 +359,9 @@
     </header>
 
 
-    <!-- RESUME UPLOAD -->
+    <!-- =========================
+         RESUME UPLOAD
+    ========================= -->
 
     <div class="card">
 
@@ -309,7 +389,9 @@
     </div>
 
 
-    <!-- JOB DESCRIPTION -->
+    <!-- =========================
+         JOB DESCRIPTION
+    ========================= -->
 
     <div class="card">
 
@@ -339,7 +421,9 @@
     </div>
 
 
-    <!-- RESULTS -->
+    <!-- =========================
+         RESULTS
+    ========================= -->
 
     <div
         class="results"
@@ -347,13 +431,16 @@
     >
 
 
-        <!-- MATCH SCORES -->
+        <!-- =========================
+             MATCH RESULTS
+        ========================= -->
 
         <div class="card">
 
             <h2>Match Results</h2>
 
             <div class="score-container">
+
 
                 <div class="score-box">
 
@@ -396,18 +483,43 @@
 
                 </div>
 
+
+            </div>
+
+
+            <!-- MATCH SUMMARY -->
+
+            <div class="match-summary">
+
+                <div
+                    class="match-status"
+                    id="matchStatus"
+                >
+                    Match Status
+                </div>
+
+                <p
+                    class="match-explanation"
+                    id="matchExplanation"
+                >
+                    Match explanation will appear here.
+                </p>
+
             </div>
 
         </div>
 
 
-        <!-- RESUME QUALITY -->
+        <!-- =========================
+             RESUME QUALITY
+        ========================= -->
 
         <div class="card">
 
             <h2>Resume Quality</h2>
 
             <div class="quality-box">
+
 
                 <div class="quality-score">
 
@@ -458,13 +570,16 @@
         </div>
 
 
-        <!-- SKILLS -->
+        <!-- =========================
+             SKILLS ANALYSIS
+        ========================= -->
 
         <div class="card">
 
             <h2>Skills Analysis</h2>
 
             <div class="skills-container">
+
 
                 <div>
 
@@ -493,12 +608,15 @@
 
                 </div>
 
+
             </div>
 
         </div>
 
 
-        <!-- SKILL BREAKDOWN -->
+        <!-- =========================
+             SKILL BREAKDOWN
+        ========================= -->
 
         <div class="card">
 
@@ -527,7 +645,9 @@
         </div>
 
 
-        <!-- RECOMMENDATIONS -->
+        <!-- =========================
+             JOB RECOMMENDATIONS
+        ========================= -->
 
         <div class="card">
 
@@ -541,7 +661,9 @@
         </div>
 
 
-        <!-- RESUME SUGGESTIONS -->
+        <!-- =========================
+             RESUME SUGGESTIONS
+        ========================= -->
 
         <div class="card">
 
@@ -562,11 +684,23 @@
 
 <script>
 
-const API_URL = "http://127.0.0.1:8000";
 
+// =========================================================
+// API
+// =========================================================
+
+const API_URL =
+    "http://127.0.0.1:8000";
+
+
+// =========================================================
+// FILE INPUT
+// =========================================================
 
 const fileInput =
-    document.getElementById("resumeFile");
+    document.getElementById(
+        "resumeFile"
+    );
 
 
 fileInput.addEventListener(
@@ -593,37 +727,56 @@ fileInput.addEventListener(
 );
 
 
+// =========================================================
+// ANALYZE RESUME
+// =========================================================
+
 async function analyzeResume() {
 
     const file =
         fileInput.files[0];
+
 
     const jobDescription =
         document.getElementById(
             "jobDescription"
         ).value.trim();
 
+
     const loading =
-        document.getElementById("loading");
+        document.getElementById(
+            "loading"
+        );
+
 
     const error =
-        document.getElementById("error");
+        document.getElementById(
+            "error"
+        );
+
 
     const results =
-        document.getElementById("results");
+        document.getElementById(
+            "results"
+        );
 
 
-    error.style.display = "none";
+    error.style.display =
+        "none";
 
+
+    // VALIDATION
 
     if (!file) {
 
         error.textContent =
             "Please upload a resume first.";
 
-        error.style.display = "block";
+        error.style.display =
+            "block";
 
         return;
+
     }
 
 
@@ -632,19 +785,25 @@ async function analyzeResume() {
         error.textContent =
             "Please enter a job description.";
 
-        error.style.display = "block";
+        error.style.display =
+            "block";
 
         return;
+
     }
 
 
+    // FORM DATA
+
     const formData =
         new FormData();
+
 
     formData.append(
         "file",
         file
     );
+
 
     formData.append(
         "job_description",
@@ -652,16 +811,22 @@ async function analyzeResume() {
     );
 
 
-    loading.style.display = "block";
+    // LOADING
 
-    results.style.display = "none";
+    loading.style.display =
+        "block";
+
+
+    results.style.display =
+        "none";
 
 
     try {
 
         const response =
             await fetch(
-                API_URL + "/analyze-resume",
+                API_URL +
+                "/analyze-resume",
                 {
                     method: "POST",
                     body: formData
@@ -683,56 +848,125 @@ async function analyzeResume() {
         }
 
 
-        displayResults(data);
+        displayResults(
+            data
+        );
 
 
     } catch (err) {
 
         error.textContent =
-            "Error: " + err.message;
+            "Error: " +
+            err.message;
 
-        error.style.display = "block";
+        error.style.display =
+            "block";
 
     }
 
 
-    loading.style.display = "none";
+    loading.style.display =
+        "none";
 
 }
 
 
+// =========================================================
+// DISPLAY RESULTS
+// =========================================================
+
 function displayResults(data) {
+
 
     document.getElementById(
         "results"
-    ).style.display = "block";
+    ).style.display =
+        "block";
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // MATCH SCORES
-    // -----------------------------------------------------
+    // =====================================================
 
     document.getElementById(
         "overallScore"
     ).textContent =
-        data.overall_match_score + "%";
+        data.overall_match_score +
+        "%";
 
 
     document.getElementById(
         "skillScore"
     ).textContent =
-        data.skill_match_score + "%";
+        data.skill_match_score +
+        "%";
 
 
     document.getElementById(
         "nlpScore"
     ).textContent =
-        data.text_similarity_score + "%";
+        data.text_similarity_score +
+        "%";
 
 
-    // -----------------------------------------------------
+    // =====================================================
+    // MATCH STATUS
+    // =====================================================
+
+    const matchStatus =
+        document.getElementById(
+            "matchStatus"
+        );
+
+
+    matchStatus.textContent =
+        data.match_status;
+
+
+    matchStatus.className =
+        "match-status";
+
+
+    if (
+        data.match_status ===
+        "Strong Match"
+    ) {
+
+        matchStatus.classList.add(
+            "strong-match"
+        );
+
+    } else if (
+        data.match_status ===
+        "Moderate Match"
+    ) {
+
+        matchStatus.classList.add(
+            "moderate-match"
+        );
+
+    } else {
+
+        matchStatus.classList.add(
+            "low-match"
+        );
+
+    }
+
+
+    // =====================================================
+    // MATCH EXPLANATION
+    // =====================================================
+
+    document.getElementById(
+        "matchExplanation"
+    ).textContent =
+        data.match_explanation;
+
+
+    // =====================================================
     // RESUME QUALITY
-    // -----------------------------------------------------
+    // =====================================================
 
     const quality =
         data.resume_quality;
@@ -766,29 +1000,36 @@ function displayResults(data) {
             : "Not detected";
 
 
-    // -----------------------------------------------------
-    // SECTIONS
-    // -----------------------------------------------------
+    // =====================================================
+    // DETECTED SECTIONS
+    // =====================================================
 
     const sectionsContainer =
         document.getElementById(
             "sections"
         );
 
-    sectionsContainer.innerHTML = "";
+
+    sectionsContainer.innerHTML =
+        "";
 
 
     quality.detected_sections.forEach(
         section => {
 
             const span =
-                document.createElement("span");
+                document.createElement(
+                    "span"
+                );
+
 
             span.className =
                 "section-tag";
 
+
             span.textContent =
                 section;
+
 
             sectionsContainer.appendChild(
                 span
@@ -798,29 +1039,36 @@ function displayResults(data) {
     );
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // MATCHED SKILLS
-    // -----------------------------------------------------
+    // =====================================================
 
     const matchedContainer =
         document.getElementById(
             "matchedSkills"
         );
 
-    matchedContainer.innerHTML = "";
+
+    matchedContainer.innerHTML =
+        "";
 
 
     data.matched_skills.forEach(
         skill => {
 
             const span =
-                document.createElement("span");
+                document.createElement(
+                    "span"
+                );
+
 
             span.className =
                 "skill matched";
 
+
             span.textContent =
                 skill;
+
 
             matchedContainer.appendChild(
                 span
@@ -830,29 +1078,36 @@ function displayResults(data) {
     );
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // MISSING SKILLS
-    // -----------------------------------------------------
+    // =====================================================
 
     const missingContainer =
         document.getElementById(
             "missingSkills"
         );
 
-    missingContainer.innerHTML = "";
+
+    missingContainer.innerHTML =
+        "";
 
 
     data.missing_skills.forEach(
         skill => {
 
             const span =
-                document.createElement("span");
+                document.createElement(
+                    "span"
+                );
+
 
             span.className =
                 "skill missing";
 
+
             span.textContent =
                 skill;
+
 
             missingContainer.appendChild(
                 span
@@ -862,47 +1117,63 @@ function displayResults(data) {
     );
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // SKILL BREAKDOWN
-    // -----------------------------------------------------
+    // =====================================================
 
     const breakdown =
         document.getElementById(
             "skillBreakdown"
         );
 
-    breakdown.innerHTML = "";
+
+    breakdown.innerHTML =
+        "";
 
 
     data.skill_breakdown.forEach(
         item => {
 
             const row =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
 
 
             const skillCell =
-                document.createElement("td");
+                document.createElement(
+                    "td"
+                );
+
 
             skillCell.textContent =
                 item.skill;
 
 
             const importanceCell =
-                document.createElement("td");
+                document.createElement(
+                    "td"
+                );
+
 
             importanceCell.textContent =
                 item.importance;
 
 
             const statusCell =
-                document.createElement("td");
+                document.createElement(
+                    "td"
+                );
 
 
-            if (item.status === "matched") {
+            if (
+                item.status ===
+                "matched"
+            ) {
 
                 statusCell.textContent =
                     "Matched";
+
 
                 statusCell.className =
                     "status matched-text";
@@ -911,6 +1182,7 @@ function displayResults(data) {
 
                 statusCell.textContent =
                     "Missing";
+
 
                 statusCell.className =
                     "status missing-text";
@@ -922,9 +1194,11 @@ function displayResults(data) {
                 skillCell
             );
 
+
             row.appendChild(
                 importanceCell
             );
+
 
             row.appendChild(
                 statusCell
@@ -939,26 +1213,32 @@ function displayResults(data) {
     );
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // JOB RECOMMENDATIONS
-    // -----------------------------------------------------
+    // =====================================================
 
     const recommendations =
         document.getElementById(
             "recommendations"
         );
 
-    recommendations.innerHTML = "";
+
+    recommendations.innerHTML =
+        "";
 
 
     data.recommendations.forEach(
         recommendation => {
 
             const li =
-                document.createElement("li");
+                document.createElement(
+                    "li"
+                );
+
 
             li.textContent =
                 recommendation;
+
 
             recommendations.appendChild(
                 li
@@ -968,26 +1248,32 @@ function displayResults(data) {
     );
 
 
-    // -----------------------------------------------------
+    // =====================================================
     // RESUME SUGGESTIONS
-    // -----------------------------------------------------
+    // =====================================================
 
     const suggestions =
         document.getElementById(
             "suggestions"
         );
 
-    suggestions.innerHTML = "";
+
+    suggestions.innerHTML =
+        "";
 
 
     quality.suggestions.forEach(
         suggestion => {
 
             const li =
-                document.createElement("li");
+                document.createElement(
+                    "li"
+                );
+
 
             li.textContent =
                 suggestion;
+
 
             suggestions.appendChild(
                 li
@@ -999,6 +1285,7 @@ function displayResults(data) {
 }
 
 </script>
+
 
 </body>
 
