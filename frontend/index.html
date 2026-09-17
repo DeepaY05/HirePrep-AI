@@ -2,10 +2,16 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>AI Resume-Job Matcher</title>
+
 
     <style>
 
@@ -16,10 +22,12 @@
             font-family: Arial, sans-serif;
         }
 
+
         body {
             background: #f5f7fb;
             color: #1f2937;
         }
+
 
         .container {
             width: 90%;
@@ -27,19 +35,23 @@
             margin: 40px auto;
         }
 
+
         header {
             text-align: center;
             margin-bottom: 35px;
         }
+
 
         header h1 {
             font-size: 34px;
             margin-bottom: 10px;
         }
 
+
         header p {
             color: #6b7280;
         }
+
 
         .card {
             background: white;
@@ -49,9 +61,15 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
         }
 
+
         .card h2 {
             margin-bottom: 18px;
         }
+
+
+        /* =========================
+           UPLOAD
+        ========================= */
 
         .upload-area {
             border: 2px dashed #9ca3af;
@@ -60,14 +78,21 @@
             text-align: center;
         }
 
+
         input[type="file"] {
             margin-top: 15px;
         }
+
 
         .file-name {
             margin-top: 15px;
             font-weight: bold;
         }
+
+
+        /* =========================
+           TEXTAREA
+        ========================= */
 
         textarea {
             width: 100%;
@@ -78,6 +103,11 @@
             resize: vertical;
             font-size: 15px;
         }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
 
         button {
             border: none;
@@ -90,16 +120,23 @@
             margin-top: 18px;
         }
 
+
         button:hover {
             background: #1d4ed8;
         }
+
+
+        /* =========================
+           RESULTS
+        ========================= */
 
         .results {
             display: none;
         }
 
+
         /* =========================
-           MATCH SCORES
+           SCORE BOXES
         ========================= */
 
         .score-container {
@@ -108,12 +145,13 @@
             gap: 18px;
         }
 
+
         .score-box {
-            text-align: center;
             padding: 25px;
             border-radius: 12px;
             background: #f8fafc;
         }
+
 
         .score-box h3 {
             color: #6b7280;
@@ -121,10 +159,49 @@
             margin-bottom: 12px;
         }
 
+
         .score {
             font-size: 32px;
             font-weight: bold;
+            margin-bottom: 15px;
         }
+
+
+        /* =========================
+           PROGRESS BAR
+        ========================= */
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+            transition: width 0.8s ease;
+        }
+
+
+        .overall-bar {
+            background: #2563eb;
+        }
+
+
+        .skill-bar {
+            background: #16a34a;
+        }
+
+
+        .nlp-bar {
+            background: #9333ea;
+        }
+
 
         /* =========================
            MATCH SUMMARY
@@ -138,11 +215,13 @@
             text-align: center;
         }
 
+
         .match-status {
             font-size: 26px;
             font-weight: bold;
             margin-bottom: 12px;
         }
+
 
         .match-explanation {
             color: #6b7280;
@@ -150,17 +229,21 @@
             font-size: 15px;
         }
 
+
         .strong-match {
             color: #15803d;
         }
+
 
         .moderate-match {
             color: #d97706;
         }
 
+
         .low-match {
             color: #dc2626;
         }
+
 
         /* =========================
            RESUME QUALITY
@@ -173,6 +256,7 @@
             align-items: center;
         }
 
+
         .quality-score {
             text-align: center;
             padding: 25px;
@@ -180,19 +264,23 @@
             border-radius: 12px;
         }
 
+
         .quality-score-number {
             font-size: 38px;
             font-weight: bold;
             margin-top: 8px;
         }
 
+
         .quality-info {
             line-height: 1.8;
         }
 
+
         .quality-info p {
             margin-bottom: 6px;
         }
+
 
         /* =========================
            SKILLS
@@ -204,11 +292,13 @@
             gap: 20px;
         }
 
+
         .skill-list {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
         }
+
 
         .skill {
             padding: 8px 12px;
@@ -217,15 +307,18 @@
             background: #e5e7eb;
         }
 
+
         .matched {
             background: #dcfce7;
             color: #166534;
         }
 
+
         .missing {
             background: #fee2e2;
             color: #991b1b;
         }
+
 
         /* =========================
            SKILL BREAKDOWN
@@ -236,6 +329,7 @@
             border-collapse: collapse;
         }
 
+
         .breakdown th,
         .breakdown td {
             text-align: left;
@@ -243,21 +337,26 @@
             border-bottom: 1px solid #e5e7eb;
         }
 
+
         .breakdown th {
             background: #f8fafc;
         }
+
 
         .status {
             font-weight: bold;
         }
 
+
         .matched-text {
             color: #15803d;
         }
 
+
         .missing-text {
             color: #dc2626;
         }
+
 
         /* =========================
            RECOMMENDATIONS
@@ -267,6 +366,7 @@
             padding-left: 20px;
             line-height: 1.8;
         }
+
 
         /* =========================
            SECTIONS
@@ -279,12 +379,14 @@
             margin-top: 12px;
         }
 
+
         .section-tag {
             padding: 8px 12px;
             background: #eef2ff;
             border-radius: 20px;
             font-size: 13px;
         }
+
 
         /* =========================
            SUGGESTIONS
@@ -295,8 +397,9 @@
             line-height: 1.8;
         }
 
+
         /* =========================
-           LOADING / ERROR
+           LOADING
         ========================= */
 
         .loading {
@@ -305,6 +408,11 @@
             margin-top: 15px;
             color: #6b7280;
         }
+
+
+        /* =========================
+           ERROR
+        ========================= */
 
         .error {
             display: none;
@@ -315,8 +423,9 @@
             margin-top: 15px;
         }
 
+
         /* =========================
-           RESPONSIVE
+           MOBILE
         ========================= */
 
         @media (max-width: 700px) {
@@ -326,6 +435,7 @@
             .quality-box {
                 grid-template-columns: 1fr;
             }
+
 
             .container {
                 width: 94%;
@@ -340,16 +450,17 @@
 
 <body>
 
+
 <div class="container">
 
 
-    <!-- =========================
-         HEADER
-    ========================= -->
+    <!-- HEADER -->
 
     <header>
 
-        <h1>AI Resume-Job Matcher</h1>
+        <h1>
+            AI Resume-Job Matcher
+        </h1>
 
         <p>
             Analyze your resume against a job description
@@ -359,13 +470,14 @@
     </header>
 
 
-    <!-- =========================
-         RESUME UPLOAD
-    ========================= -->
+    <!-- RESUME UPLOAD -->
 
     <div class="card">
 
-        <h2>1. Upload Resume</h2>
+        <h2>
+            1. Upload Resume
+        </h2>
+
 
         <div class="upload-area">
 
@@ -373,11 +485,13 @@
                 Upload your resume in PDF or DOCX format
             </p>
 
+
             <input
                 type="file"
                 id="resumeFile"
                 accept=".pdf,.docx"
             >
+
 
             <div
                 class="file-name"
@@ -389,22 +503,27 @@
     </div>
 
 
-    <!-- =========================
-         JOB DESCRIPTION
-    ========================= -->
+    <!-- JOB DESCRIPTION -->
 
     <div class="card">
 
-        <h2>2. Job Description</h2>
+        <h2>
+            2. Job Description
+        </h2>
+
 
         <textarea
             id="jobDescription"
             placeholder="Paste the job description here..."
         ></textarea>
 
-        <button onclick="analyzeResume()">
+
+        <button
+            onclick="analyzeResume()"
+        >
             Analyze Resume
         </button>
+
 
         <div
             class="loading"
@@ -412,6 +531,7 @@
         >
             Analyzing resume...
         </div>
+
 
         <div
             class="error"
@@ -421,9 +541,7 @@
     </div>
 
 
-    <!-- =========================
-         RESULTS
-    ========================= -->
+    <!-- RESULTS -->
 
     <div
         class="results"
@@ -431,20 +549,26 @@
     >
 
 
-        <!-- =========================
-             MATCH RESULTS
-        ========================= -->
+        <!-- MATCH RESULTS -->
 
         <div class="card">
 
-            <h2>Match Results</h2>
+            <h2>
+                Match Results
+            </h2>
+
 
             <div class="score-container">
 
 
+                <!-- OVERALL -->
+
                 <div class="score-box">
 
-                    <h3>Overall Match</h3>
+                    <h3>
+                        Overall Match
+                    </h3>
+
 
                     <div
                         class="score"
@@ -453,12 +577,27 @@
                         0%
                     </div>
 
+
+                    <div class="progress-container">
+
+                        <div
+                            class="progress-bar overall-bar"
+                            id="overallProgress"
+                        ></div>
+
+                    </div>
+
                 </div>
 
 
+                <!-- SKILL -->
+
                 <div class="score-box">
 
-                    <h3>Skill Match</h3>
+                    <h3>
+                        Skill Match
+                    </h3>
+
 
                     <div
                         class="score"
@@ -467,18 +606,43 @@
                         0%
                     </div>
 
+
+                    <div class="progress-container">
+
+                        <div
+                            class="progress-bar skill-bar"
+                            id="skillProgress"
+                        ></div>
+
+                    </div>
+
                 </div>
 
 
+                <!-- NLP -->
+
                 <div class="score-box">
 
-                    <h3>NLP Similarity</h3>
+                    <h3>
+                        NLP Similarity
+                    </h3>
+
 
                     <div
                         class="score"
                         id="nlpScore"
                     >
                         0%
+                    </div>
+
+
+                    <div class="progress-container">
+
+                        <div
+                            class="progress-bar nlp-bar"
+                            id="nlpProgress"
+                        ></div>
+
                     </div>
 
                 </div>
@@ -498,6 +662,7 @@
                     Match Status
                 </div>
 
+
                 <p
                     class="match-explanation"
                     id="matchExplanation"
@@ -510,20 +675,24 @@
         </div>
 
 
-        <!-- =========================
-             RESUME QUALITY
-        ========================= -->
+        <!-- RESUME QUALITY -->
 
         <div class="card">
 
-            <h2>Resume Quality</h2>
+            <h2>
+                Resume Quality
+            </h2>
+
 
             <div class="quality-box">
 
 
                 <div class="quality-score">
 
-                    <h3>Quality Score</h3>
+                    <h3>
+                        Quality Score
+                    </h3>
+
 
                     <div
                         class="quality-score-number"
@@ -532,7 +701,10 @@
                         0
                     </div>
 
-                    <p>out of 100</p>
+
+                    <p>
+                        out of 100
+                    </p>
 
                 </div>
 
@@ -540,23 +712,40 @@
                 <div class="quality-info">
 
                     <p>
-                        <strong>Word Count:</strong>
-                        <span id="wordCount">0</span>
+                        <strong>
+                            Word Count:
+                        </strong>
+
+                        <span id="wordCount">
+                            0
+                        </span>
                     </p>
 
+
                     <p>
-                        <strong>Email:</strong>
+                        <strong>
+                            Email:
+                        </strong>
+
                         <span id="emailStatus"></span>
                     </p>
 
+
                     <p>
-                        <strong>Phone:</strong>
+                        <strong>
+                            Phone:
+                        </strong>
+
                         <span id="phoneStatus"></span>
                     </p>
 
+
                     <p>
-                        <strong>Detected Sections:</strong>
+                        <strong>
+                            Detected Sections:
+                        </strong>
                     </p>
+
 
                     <div
                         class="section-list"
@@ -570,13 +759,14 @@
         </div>
 
 
-        <!-- =========================
-             SKILLS ANALYSIS
-        ========================= -->
+        <!-- SKILLS -->
 
         <div class="card">
 
-            <h2>Skills Analysis</h2>
+            <h2>
+                Skills Analysis
+            </h2>
+
 
             <div class="skills-container">
 
@@ -586,6 +776,7 @@
                     <h3 style="margin-bottom: 12px;">
                         Matched Skills
                     </h3>
+
 
                     <div
                         class="skill-list"
@@ -601,6 +792,7 @@
                         Missing Skills
                     </h3>
 
+
                     <div
                         class="skill-list"
                         id="missingSkills"
@@ -614,13 +806,14 @@
         </div>
 
 
-        <!-- =========================
-             SKILL BREAKDOWN
-        ========================= -->
+        <!-- SKILL BREAKDOWN -->
 
         <div class="card">
 
-            <h2>Skill Breakdown</h2>
+            <h2>
+                Skill Breakdown
+            </h2>
+
 
             <table class="breakdown">
 
@@ -628,13 +821,22 @@
 
                     <tr>
 
-                        <th>Skill</th>
-                        <th>Importance</th>
-                        <th>Status</th>
+                        <th>
+                            Skill
+                        </th>
+
+                        <th>
+                            Importance
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
 
                     </tr>
 
                 </thead>
+
 
                 <tbody
                     id="skillBreakdown"
@@ -645,13 +847,14 @@
         </div>
 
 
-        <!-- =========================
-             JOB RECOMMENDATIONS
-        ========================= -->
+        <!-- RECOMMENDATIONS -->
 
         <div class="card">
 
-            <h2>Job Match Recommendations</h2>
+            <h2>
+                Job Match Recommendations
+            </h2>
+
 
             <ul
                 class="recommendations"
@@ -661,13 +864,14 @@
         </div>
 
 
-        <!-- =========================
-             RESUME SUGGESTIONS
-        ========================= -->
+        <!-- SUGGESTIONS -->
 
         <div class="card">
 
-            <h2>Resume Improvement Suggestions</h2>
+            <h2>
+                Resume Improvement Suggestions
+            </h2>
+
 
             <ul
                 class="suggestion-list"
@@ -719,7 +923,8 @@ fileInput.addEventListener(
 
             document.getElementById(
                 "fileName"
-            ).textContent = "";
+            ).textContent =
+                "";
 
         }
 
@@ -732,6 +937,7 @@ fileInput.addEventListener(
 // =========================================================
 
 async function analyzeResume() {
+
 
     const file =
         fileInput.files[0];
@@ -885,27 +1091,70 @@ function displayResults(data) {
 
 
     // =====================================================
-    // MATCH SCORES
+    // SCORES
     // =====================================================
+
+    const overallScore =
+        Number(
+            data.overall_match_score
+        );
+
+
+    const skillScore =
+        Number(
+            data.skill_match_score
+        );
+
+
+    const nlpScore =
+        Number(
+            data.text_similarity_score
+        );
+
 
     document.getElementById(
         "overallScore"
     ).textContent =
-        data.overall_match_score +
+        overallScore +
         "%";
 
 
     document.getElementById(
         "skillScore"
     ).textContent =
-        data.skill_match_score +
+        skillScore +
         "%";
 
 
     document.getElementById(
         "nlpScore"
     ).textContent =
-        data.text_similarity_score +
+        nlpScore +
+        "%";
+
+
+    // =====================================================
+    // PROGRESS BARS
+    // =====================================================
+
+    document.getElementById(
+        "overallProgress"
+    ).style.width =
+        overallScore +
+        "%";
+
+
+    document.getElementById(
+        "skillProgress"
+    ).style.width =
+        skillScore +
+        "%";
+
+
+    document.getElementById(
+        "nlpProgress"
+    ).style.width =
+        nlpScore +
         "%";
 
 
@@ -1214,7 +1463,7 @@ function displayResults(data) {
 
 
     // =====================================================
-    // JOB RECOMMENDATIONS
+    // RECOMMENDATIONS
     // =====================================================
 
     const recommendations =
